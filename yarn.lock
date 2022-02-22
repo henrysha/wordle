@@ -5,6 +5,31 @@ __metadata:
   version: 6
   cacheKey: 8
 
+"6-letter-wordle@workspace:.":
+  version: 0.0.0-use.local
+  resolution: "6-letter-wordle@workspace:."
+  dependencies:
+    "@types/react": ^17.0.33
+    "@types/react-dom": ^17.0.10
+    "@typescript-eslint/eslint-plugin": ^5.12.1
+    "@typescript-eslint/parser": ^5.12.1
+    "@vitejs/plugin-react": ^1.0.7
+    eslint: ^8.9.0
+    eslint-config-prettier: ^8.4.0
+    eslint-plugin-import: ^2.25.4
+    eslint-plugin-react: ^7.28.0
+    eslint-plugin-react-hooks: ^4.3.0
+    husky: ^7.0.4
+    pinst: ^3.0.0
+    prettier: ^2.5.1
+    react: ^17.0.2
+    react-dom: ^17.0.2
+    sass: ^1.49.8
+    typescript: ^4.5.4
+    vite: ^2.8.0
+  languageName: unknown
+  linkType: soft
+
 "@ampproject/remapping@npm:^2.1.0":
   version: 2.1.2
   resolution: "@ampproject/remapping@npm:2.1.2"
@@ -1467,6 +1492,15 @@ __metadata:
   peerDependencies:
     eslint: ^2 || ^3 || ^4 || ^5 || ^6 || ^7.2.0 || ^8
   checksum: 0af24f5c7c6ca692f42e3947127f0ae7dfe44f1e02740f7cbe988b510a9c52bab0065d7df04e2d953dcc88a4595a00cbdcf14018acf8cd75cfd47b72efcbb734
+  languageName: node
+  linkType: hard
+
+"eslint-plugin-react-hooks@npm:^4.3.0":
+  version: 4.3.0
+  resolution: "eslint-plugin-react-hooks@npm:4.3.0"
+  peerDependencies:
+    eslint: ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0-0
+  checksum: 0ba1566ba0780bbc75a5921f49188edf232db2085ab32c8d3889592f0db9d6fadc97fcf639775e0101dec6b5409ca3c803ec44213b90c8bacaf0bdf921871c2e
   languageName: node
   linkType: hard
 
@@ -3535,30 +3569,6 @@ __metadata:
   checksum: 30b48f91fcf12106ed3186ae4fa86a6a1842416df425be7b60485de14bec665a54a68e4b5156647dec3a70f25e84d270ca8bc8cd23182ed095f5c7206a938c1f
   languageName: node
   linkType: hard
-
-"wordle@workspace:.":
-  version: 0.0.0-use.local
-  resolution: "wordle@workspace:."
-  dependencies:
-    "@types/react": ^17.0.33
-    "@types/react-dom": ^17.0.10
-    "@typescript-eslint/eslint-plugin": ^5.12.1
-    "@typescript-eslint/parser": ^5.12.1
-    "@vitejs/plugin-react": ^1.0.7
-    eslint: ^8.9.0
-    eslint-config-prettier: ^8.4.0
-    eslint-plugin-import: ^2.25.4
-    eslint-plugin-react: ^7.28.0
-    husky: ^7.0.4
-    pinst: ^3.0.0
-    prettier: ^2.5.1
-    react: ^17.0.2
-    react-dom: ^17.0.2
-    sass: ^1.49.8
-    typescript: ^4.5.4
-    vite: ^2.8.0
-  languageName: unknown
-  linkType: soft
 
 "wrappy@npm:1":
   version: 1.0.2

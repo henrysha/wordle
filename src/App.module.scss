@@ -1,0 +1,36 @@
+$length: 6;
+$rounds: 6;
+
+.App {
+  display: grid;
+  grid-template-columns: repeat($length, 1fr);
+  place-items: center;
+  height: 100vh;
+  grid-gap: 10px;
+}
+
+.input {
+  justify-self: stretch;
+  align-self: stretch;
+}
+
+.correct {
+  :disabled {
+    background-color: green;
+  }
+  background-color: green;
+}
+
+.wrong_position {
+  :disabled {
+    background-color: yellow;
+  }
+  background-color: yellow;
+}
+
+.incorrect {
+  :disabled {
+    background-color: lightgrey;
+  }
+  background-color: lightgrey;
+}
