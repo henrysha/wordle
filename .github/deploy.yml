@@ -8,10 +8,16 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    run: |
-      git remote set-url origin https://git:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git
-      yarn set version berry
-      yarn
-      yarn deploy -- -u "github-actions-bot <support+actions@github.com>"
-    env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 'lts/*'
+      - run: npm install -g yarn
+      - run: yarn set version berry
+      - run: yarn
+      - run: |
+          git remote set-url origin https://git:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git
+          yarn deploy -- -u "github-actions-bot <support+actions@github.com>"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
