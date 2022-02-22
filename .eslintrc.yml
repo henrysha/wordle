@@ -42,3 +42,7 @@ rules:
         - pattern: "react"
           group: "external"
           position: "before"
+      newlines-between: "always"
+  lines-between-class-members:
+    - error
+    - always
