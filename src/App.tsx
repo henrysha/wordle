@@ -65,12 +65,8 @@ function App() {
       if (prev[currentInputIdx % LENGTH] !== '') return prev
       prev[currentInputIdx % LENGTH] = input
       if (container && container.children[currentInputIdx]) {
-        ;(
-          container.children[currentInputIdx].children[0] as HTMLInputElement
-        ).focus()
-        ;(
-          container.children[currentInputIdx].children[0] as HTMLInputElement
-        ).value = input
+        ;(container.children[currentInputIdx] as HTMLInputElement).focus()
+        ;(container.children[currentInputIdx] as HTMLInputElement).value = input
       }
       return prev
     })
@@ -104,7 +100,7 @@ function App() {
         const index = currentRound * LENGTH + newInputIdx
         prev[index] = ''
         if (container && container.children[index])
-          (container.children[index].children[0] as HTMLInputElement).value = ''
+          (container.children[index] as HTMLInputElement).value = ''
         return prev
       })
 
@@ -213,17 +209,12 @@ function App() {
 
   useEffect(() => {
     if (container)
-      (
-        container.children[currentInputIdx]?.children[0] as HTMLInputElement
-      )?.focus()
+      (container.children[currentInputIdx] as HTMLInputElement)?.focus()
   }, [container, currentInputIdx])
 
   useEffect(() => {
     if (container)
-      (
-        container.children[currentRound * LENGTH]
-          ?.children[0] as HTMLInputElement
-      )?.focus()
+      (container.children[currentRound * LENGTH] as HTMLInputElement)?.focus()
   }, [container, currentRound])
 
   return (
@@ -232,15 +223,15 @@ function App() {
         {Array(LENGTH * ROUNDS)
           .fill(1)
           .map((_, i) => (
-            <div className={styles.input} key={i}>
-              <input
-                type="text"
-                onChange={onInputChange(i)}
-                maxLength={1}
-                disabled={!isInputEnabled(i)}
-                onFocus={() => onInputFocus(i)}
-              />
-            </div>
+            <input
+              type="text"
+              className={styles.input}
+              onChange={onInputChange(i)}
+              maxLength={1}
+              disabled={!isInputEnabled(i)}
+              onFocus={() => onInputFocus(i)}
+              key={i}
+            />
           ))}
       </div>
       <Keyboard usedButtons={usedButtons} onClick={onKeyButtonPressed} />

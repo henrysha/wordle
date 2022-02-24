@@ -6,62 +6,56 @@ $wrongPosColor: yellow;
 $incorrectColor: lightgrey;
 
 .App {
-  position: relative;
+  max-width: 1280px;
   height: 100vh;
   display: grid;
-  justify-content: center;
   grid-template-rows: 7fr 3fr;
 }
 
 .board {
   display: grid;
   grid-template-columns: repeat($length, 1fr);
-  place-items: center;
-  // height: 90vw;
-  // max-height: 50vh;
-  // max-width: 50vh;
-  // grid-gap: 10px;
-  padding: 5vw;
+  justify-content: center;
+  max-height: 100%;
+  padding: 2em;
 }
 
 .input {
-  // justify-self: stretch;
-  // align-self: stretch;
-  display: flex;
-  &:before {
-    content: '';
-    display: block;
-    height: 0;
-    width: 0;
-    padding-bottom: calc(1 * 100%);
+  justify-self: stretch;
+  align-self: stretch;
+  width: 100%;
+  font-size: 5vw;
+  text-align: center;
+  border: 2px solid black;
+  padding: 0;
+  @media screen and (max-width: 480px) {
+    font-size: 6vw;
   }
-  input {
-    width: 100%;
-    font-size: 5vw;
-    text-align: center;
-    @media screen and (max-width: 480px) {
-      font-size: 6vw;
-    }
+  &:disabled {
+    border: 1px solid rgb(184, 184, 184);
+    padding: 0;
+    color: black;
+    background-color: rgba(238, 238, 238, 0.701);
   }
-}
 
-.correct {
-  :disabled {
+  &.correct {
+    :disabled {
+      background-color: $correctColor;
+    }
     background-color: $correctColor;
   }
-  background-color: $correctColor;
-}
 
-.wrong_position {
-  :disabled {
+  &.wrong_position {
+    :disabled {
+      background-color: $wrongPosColor;
+    }
     background-color: $wrongPosColor;
   }
-  background-color: $wrongPosColor;
-}
 
-.incorrect {
-  :disabled {
+  &.incorrect {
+    :disabled {
+      background-color: $incorrectColor;
+    }
     background-color: $incorrectColor;
   }
-  background-color: $incorrectColor;
 }
