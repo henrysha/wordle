@@ -11,25 +11,16 @@ jobs:
     steps:
       - name: Checkout Files
         uses: actions/checkout@v2
-      - name: Verify Changed Files
-        uses: tj-actions/verify-changed-files@v8.8
-        id: verify-changed-files
-        with:
-          files: |
-            src
       - name: Setup Node
-        if: steps.verify-changed-files.outputs.files_changed == 'true'
         uses: actions/setup-node@v2
         with:
           node-version: 'lts/*'
       - name: Setup yarn
-        if: steps.verify-changed-files.outputs.files_changed == 'true'
         run: |
           npm install -g yarn
           yarn set version berry
           yarn
       - name: Deploy to Github Pages
-        if: steps.verify-changed-files.outputs.files_changed == 'true'
         run: |
           git remote set-url origin https://git:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git
           yarn deploy -u "github-actions-bot <support+actions@github.com>"
