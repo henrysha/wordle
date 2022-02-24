@@ -16,6 +16,8 @@ parserOptions:
     jsx: true
   ecmaVersion: latest
   sourceType: module
+  project: './tsconfig.json'
+  tsconfigRootDir: './'
 plugins:
   - react
   - '@typescript-eslint'
@@ -23,6 +25,7 @@ rules:
   indent:
     - error
     - 2
+    - SwitchCase: 1
   linebreak-style:
     - error
     - unix
@@ -36,8 +39,8 @@ rules:
     - error
     - groups:
         - ['builtin', 'external']
-        - ['parent', 'sibling']
         - internal
+        - ['parent', 'sibling']
         - index
       pathGroups:
         - pattern: 'react'
@@ -47,3 +50,16 @@ rules:
   lines-between-class-members:
     - error
     - always
+settings:
+  import/parser:
+    '@typescript-eslint/parser':
+      - '.ts'
+      - '.tsx'
+  import/resolver:
+    typescript: {}
+    node:
+      extensions:
+        - '.js'
+        - '.jsx'
+        - '.ts'
+        - '.tsx'

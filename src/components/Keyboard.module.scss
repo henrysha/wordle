@@ -1,0 +1,44 @@
+@import '../App.module.scss';
+
+.keyboard_wrapper {
+  background-color: lightgrey;
+  width: 100vw;
+  height: 30vh;
+  position: absolute;
+  bottom: 0;
+
+  .row {
+    display: grid;
+    height: 33.3%;
+
+    &.firstRow {
+      grid-template-columns: repeat(10, 1fr);
+    }
+
+    &.otherRows {
+      grid-template-columns: repeat(9, 1fr);
+    }
+
+    .key {
+      justify-self: stretch;
+      align-self: stretch;
+      border: 1px solid #7b7b7b;
+
+      &.notPressed {
+        background-color: $incorrectColor;
+      }
+
+      &.correct {
+        background-color: $correctColor;
+      }
+
+      &.incorrect {
+        background-color: $incorrectColor;
+      }
+
+      &.wrongPosition {
+        background-color: $wrongPosColor;
+      }
+    }
+  }
+}

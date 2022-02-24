@@ -1,36 +1,67 @@
 $length: 6;
 $rounds: 6;
 
+$correctColor: green;
+$wrongPosColor: yellow;
+$incorrectColor: lightgrey;
+
 .App {
+  position: relative;
+  height: 100vh;
+  display: grid;
+  justify-content: center;
+  grid-template-rows: 7fr 3fr;
+}
+
+.board {
   display: grid;
   grid-template-columns: repeat($length, 1fr);
   place-items: center;
-  height: 100vh;
-  grid-gap: 10px;
+  // height: 90vw;
+  // max-height: 50vh;
+  // max-width: 50vh;
+  // grid-gap: 10px;
+  padding: 5vw;
 }
 
 .input {
-  justify-self: stretch;
-  align-self: stretch;
+  // justify-self: stretch;
+  // align-self: stretch;
+  display: flex;
+  &:before {
+    content: '';
+    display: block;
+    height: 0;
+    width: 0;
+    padding-bottom: calc(1 * 100%);
+  }
+  input {
+    width: 100%;
+    font-size: 5vw;
+    text-align: center;
+    @media screen and (max-width: 480px) {
+      font-size: 6vw;
+    }
+  }
 }
 
 .correct {
   :disabled {
-    background-color: green;
+    background-color: $correctColor;
   }
-  background-color: green;
+  background-color: $correctColor;
 }
 
 .wrong_position {
   :disabled {
-    background-color: yellow;
+    background-color: $wrongPosColor;
   }
-  background-color: yellow;
+  background-color: $wrongPosColor;
 }
 
 .incorrect {
   :disabled {
-    background-color: lightgrey;
+    background-color: $incorrectColor;
   }
-  background-color: lightgrey;
+  background-color: $incorrectColor;
 }
