@@ -190,6 +190,7 @@ function App() {
     proceedToNextRound()
   }, [
     currentInputIdx,
+    inputs,
     currentRound,
     currentInputs,
     isCorrect,
