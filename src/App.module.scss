@@ -18,6 +18,9 @@ $incorrectColor: lightgrey;
   justify-content: center;
   max-height: 100%;
   padding: 2em;
+  grid-gap: 1px;
+  background-color: black;
+  border: 1px solid black;
 }
 
 .input {
@@ -25,17 +28,13 @@ $incorrectColor: lightgrey;
   align-self: stretch;
   width: 100%;
   font-size: 5vw;
-  text-align: center;
-  border: 2px solid black;
+  aspect-ratio: 1;
+  justify-content: center;
+  display: grid;
   padding: 0;
+  background-color: white;
   @media screen and (max-width: 480px) {
     font-size: 6vw;
-  }
-  &:disabled {
-    border: 1px solid rgb(184, 184, 184);
-    padding: 0;
-    color: black;
-    background-color: rgba(238, 238, 238, 0.701);
   }
 
   &.correct {

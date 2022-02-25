@@ -1,12 +1,6 @@
-import {
-  MouseEvent,
-  ChangeEvent,
-  useCallback,
-  useEffect,
-  useState,
-} from 'react'
+import { MouseEvent, useCallback, useEffect, useState } from 'react'
 
-import { KeyboardState } from 'constants/keyboard'
+import { KeyboardState, KEYS } from 'constants/keyboard'
 import { KeyboardButton, Keys } from 'types/keyboard'
 import Keyboard from 'components/Keyboard'
 import { getInitialKeyboardState } from 'utils/getInitialKeyboardState'
@@ -15,7 +9,7 @@ import styles from './App.module.scss'
 
 const LENGTH = 6
 const ROUNDS = 6
-const INITIAL_INPUT = Object.freeze(Array(LENGTH).fill(''))
+const INITIAL_INPUT = Object.freeze(Array(LENGTH).fill(undefined))
 // TODO: update ANSWER to be random ${LENGTH} length word from dictionary.
 const ANSWER = 'ABOARD'
 
@@ -23,34 +17,18 @@ const ANSWER = 'ABOARD'
 // TODO: add timer
 function App() {
   const [container, setContainer] = useState<HTMLDivElement | null>()
-  const [inputs, setInputs] = useState<Keys[]>([...INITIAL_INPUT])
+  const [currentInputs, setCurrentInputs] = useState<(Keys | undefined)[]>([
+    ...INITIAL_INPUT,
+  ])
+  const [inputs, setInputs] = useState<(Keys | undefined)[]>(
+    Array(LENGTH * ROUNDS).fill(undefined)
+  )
   const [currentInputIdx, setCurrentInputIdx] = useState(0)
   const [currentRound, setCurrentRound] = useState(0)
   const [isPlaying, setIsPlaying] = useState(true)
   const [usedButtons, setUsedButtons] = useState<KeyboardButton>(
     getInitialKeyboardState()
   )
-
-  const isInputEnabled = (index: number) =>
-    index >= LENGTH * currentRound &&
-    index < LENGTH * (currentRound + 1) &&
-    isPlaying
-
-  const onInputFocus = (index: number) => {
-    setCurrentInputIdx(index)
-  }
-
-  const onInputChange =
-    (index: number) => (e: ChangeEvent<HTMLInputElement>) => {
-      e.target.value = e.target.value.toUpperCase()
-      setInputs((prev) => {
-        prev[index % LENGTH] = e.target.value as Keys
-        return prev
-      })
-      if (e.target.value && index % LENGTH < LENGTH - 1) {
-        setCurrentInputIdx(index + 1)
-      }
-    }
 
   const handleEnter = () => {
     checkAnswer()
@@ -60,53 +38,67 @@ function App() {
     removePrevInput()
   }
 
-  const handleKeyPress = (input: Keys) => {
-    setInputs((prev) => {
-      if (prev[currentInputIdx % LENGTH] !== '') return prev
-      prev[currentInputIdx % LENGTH] = input
-      if (container && container.children[currentInputIdx]) {
-        ;(container.children[currentInputIdx] as HTMLInputElement).focus()
-        ;(container.children[currentInputIdx] as HTMLInputElement).value = input
+  const handleKeyPress = useCallback(
+    (input: Keys) => {
+      if (currentInputs[currentInputIdx % LENGTH]) return
+
+      setCurrentInputs((prev) => {
+        prev[currentInputIdx % LENGTH] = input
+        return [...prev]
+      })
+
+      setInputs((prev) => {
+        prev[currentInputIdx] = input
+        return [...prev]
+      })
+
+      if (currentInputIdx % LENGTH < LENGTH - 1) {
+        setCurrentInputIdx((prev) => prev + 1)
       }
-      return prev
-    })
-    if (currentInputIdx % LENGTH < LENGTH - 1) {
-      setCurrentInputIdx(currentInputIdx + 1)
-    }
-  }
+    },
+    [currentInputIdx, currentInputs]
+  )
 
   const onKeyButtonPressed = (e: MouseEvent<HTMLButtonElement>) => {
-    const input = e.currentTarget.innerText.toUpperCase() as Keys
+    if (!isPlaying) return
+
+    const input = e.currentTarget.innerText.toUpperCase()
+
+    if (!Object.values(KEYS).includes(input)) return
+
     switch (input) {
-      case 'ENTER':
+      case KEYS.ENTER:
         handleEnter()
         return
-      case 'DEL':
+      case KEYS.BACKSPACE:
         handleDel()
         return
       default:
-        handleKeyPress(input)
+        handleKeyPress(input as Keys)
     }
   }
 
   const removePrevInput = useCallback(() => {
     setCurrentInputIdx((prevInputIdx) => {
       const newInputIdx =
-        inputs[prevInputIdx] === '' && prevInputIdx % LENGTH > 0
-          ? prevInputIdx - 1
-          : prevInputIdx
+        currentInputs[prevInputIdx] && prevInputIdx % LENGTH > 0
+          ? prevInputIdx
+          : prevInputIdx - 1
+
+      setCurrentInputs((prev) => {
+        const index = newInputIdx - currentRound * LENGTH
+        prev[index] = undefined
+        return [...prev]
+      })
 
       setInputs((prev) => {
-        const index = currentRound * LENGTH + newInputIdx
-        prev[index] = ''
-        if (container && container.children[index])
-          (container.children[index] as HTMLInputElement).value = ''
-        return prev
+        prev[newInputIdx] = undefined
+        return [...prev]
       })
 
       return newInputIdx
     })
-  }, [container, currentRound, inputs])
+  }, [currentRound, currentInputs])
 
   const isCorrect = useCallback(
     (index: number) => {
@@ -150,8 +142,12 @@ function App() {
   }
 
   const proceedToNextRound = () => {
-    setInputs([...INITIAL_INPUT])
-    setCurrentRound((prev) => prev + 1)
+    setCurrentInputs([...INITIAL_INPUT])
+    setCurrentRound((prev) => {
+      const nextRound = prev + 1
+      setCurrentInputIdx(nextRound * LENGTH)
+      return nextRound
+    })
   }
 
   const updateUsedButtons = (value: Keys, state: KeyboardState) => {
@@ -162,12 +158,14 @@ function App() {
   }
 
   const checkAnswer = useCallback(() => {
-    const inputIsNotComplete = inputs.filter((input) => input === '').length > 0
+    const inputIsNotComplete = currentInputIdx % LENGTH < LENGTH - 1
 
     if (inputIsNotComplete) return
 
     let correctCount = 0
-    for (const [i, input] of inputs.entries()) {
+    for (const [i, input] of currentInputs.entries()) {
+      if (!input) continue
+
       if (input === ANSWER[i]) {
         isCorrect(i)
         updateUsedButtons(input, KeyboardState.CORRECT)
@@ -188,15 +186,32 @@ function App() {
       return
     }
     proceedToNextRound()
-  }, [currentRound, inputs, isCorrect, isWrongPosition, isWrong])
+  }, [
+    currentInputIdx,
+    currentRound,
+    currentInputs,
+    isCorrect,
+    isWrongPosition,
+    isWrong,
+  ])
 
   useEffect(() => {
     const keyDownHandler = (e: KeyboardEvent) => {
-      if (e.key === 'Backspace') {
-        removePrevInput()
-      }
-      if (e.key === 'Enter') {
-        checkAnswer()
+      if (!isPlaying) return
+
+      const input = e.key.toUpperCase()
+
+      if (!Object.keys(KEYS).includes(input)) return
+
+      switch (input) {
+        case 'BACKSPACE':
+          removePrevInput()
+          return
+        case 'ENTER':
+          checkAnswer()
+          return
+        default:
+          handleKeyPress(input as Keys)
       }
     }
 
@@ -205,34 +220,16 @@ function App() {
     return () => {
       window.removeEventListener('keydown', keyDownHandler)
     }
-  }, [checkAnswer, removePrevInput])
-
-  useEffect(() => {
-    if (container)
-      (container.children[currentInputIdx] as HTMLInputElement)?.focus()
-  }, [container, currentInputIdx])
-
-  useEffect(() => {
-    if (container)
-      (container.children[currentRound * LENGTH] as HTMLInputElement)?.focus()
-  }, [container, currentRound])
+  }, [checkAnswer, handleKeyPress, isPlaying, removePrevInput])
 
   return (
     <div className={styles.App}>
       <div className={styles.board} ref={setContainer}>
-        {Array(LENGTH * ROUNDS)
-          .fill(1)
-          .map((_, i) => (
-            <input
-              type="text"
-              className={styles.input}
-              onChange={onInputChange(i)}
-              maxLength={1}
-              disabled={!isInputEnabled(i)}
-              onFocus={() => onInputFocus(i)}
-              key={i}
-            />
-          ))}
+        {inputs.map((val, i) => (
+          <div className={styles.input} key={i}>
+            {val}
+          </div>
+        ))}
       </div>
       <Keyboard usedButtons={usedButtons} onClick={onKeyButtonPressed} />
     </div>

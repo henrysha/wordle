@@ -1,9 +1,8 @@
-import { KeyboardState, KEYS } from 'constants/keyboard'
+import { KeyboardState } from 'constants/keyboard'
 import { KeyboardButton } from 'types/keyboard'
 
 export const getInitialKeyboardState = () => {
   const keyboardState: KeyboardButton = {
-    '': KeyboardState.NOT_PRESSED,
     Q: KeyboardState.NOT_PRESSED,
     W: KeyboardState.NOT_PRESSED,
     E: KeyboardState.NOT_PRESSED,
@@ -31,7 +30,7 @@ export const getInitialKeyboardState = () => {
     B: KeyboardState.NOT_PRESSED,
     N: KeyboardState.NOT_PRESSED,
     M: KeyboardState.NOT_PRESSED,
-    DEL: KeyboardState.NOT_PRESSED,
+    BACKSPACE: KeyboardState.NOT_PRESSED,
   }
 
   return keyboardState

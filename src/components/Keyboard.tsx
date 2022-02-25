@@ -1,6 +1,6 @@
 import { MouseEventHandler } from 'react'
 
-import { KEYBOARD, KeyboardState } from 'constants/keyboard'
+import { KEYBOARD, KeyboardState, KEYS } from 'constants/keyboard'
 import { KeyboardButton, Keys } from 'types/keyboard'
 
 import styles from './Keyboard.module.scss'
@@ -36,11 +36,13 @@ const Keyboard = ({
         >
           {row.map((key) => (
             <button
-              className={[styles.key, getKeyboardStateStyle(key)].join(' ')}
+              className={[styles.key, getKeyboardStateStyle(key as Keys)].join(
+                ' '
+              )}
               onClick={onClick}
               key={key}
             >
-              {key}
+              {KEYS[key]}
             </button>
           ))}
         </div>
