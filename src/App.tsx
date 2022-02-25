@@ -158,7 +158,9 @@ function App() {
   }
 
   const checkAnswer = useCallback(() => {
-    const inputIsNotComplete = currentInputIdx % LENGTH < LENGTH - 1
+    const inputIsNotComplete =
+      currentInputIdx % LENGTH < LENGTH - 1 ||
+      inputs[currentInputIdx] === undefined
 
     if (inputIsNotComplete) return
 

@@ -15,7 +15,7 @@ $incorrectColor: lightgrey;
 .board {
   display: grid;
   grid-template-columns: repeat($length, 1fr);
-  justify-content: center;
+  place-items: center;
   max-height: 100%;
   padding: 2em;
   grid-gap: 1px;
@@ -29,7 +29,7 @@ $incorrectColor: lightgrey;
   width: 100%;
   font-size: 5vw;
   aspect-ratio: 1;
-  justify-content: center;
+  place-items: center;
   display: grid;
   padding: 0;
   background-color: white;
@@ -38,23 +38,14 @@ $incorrectColor: lightgrey;
   }
 
   &.correct {
-    :disabled {
-      background-color: $correctColor;
-    }
     background-color: $correctColor;
   }
 
   &.wrong_position {
-    :disabled {
-      background-color: $wrongPosColor;
-    }
     background-color: $wrongPosColor;
   }
 
   &.incorrect {
-    :disabled {
-      background-color: $incorrectColor;
-    }
     background-color: $incorrectColor;
   }
 }
