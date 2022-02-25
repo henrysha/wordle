@@ -1,14 +1,17 @@
+import { useAtom } from 'jotai'
 import { MouseEvent, useCallback, useEffect, useState } from 'react'
 
+import { showCompletionModal } from 'atoms/modalState'
+import Keyboard from 'components/Keyboard'
+import { CompletionModal } from 'components/Modals'
 import { KeyboardState, KEYS } from 'constants/keyboard'
 import { KeyboardButton, Keys } from 'types/keyboard'
-import Keyboard from 'components/Keyboard'
 import { getInitialKeyboardState } from 'utils/getInitialKeyboardState'
 
 import styles from './App.module.scss'
 
-const LENGTH = 6
-const ROUNDS = 6
+export const LENGTH = 6
+export const ROUNDS = 6
 const INITIAL_INPUT = Object.freeze(Array(LENGTH).fill(undefined))
 // TODO: update ANSWER to be random ${LENGTH} length word from dictionary.
 const ANSWER = 'ABOARD'
@@ -23,12 +26,16 @@ function App() {
   const [inputs, setInputs] = useState<(Keys | undefined)[]>(
     Array(LENGTH * ROUNDS).fill(undefined)
   )
+  const [inputState, setInputState] = useState<KeyboardState[]>(
+    Array(LENGTH * ROUNDS).fill(KeyboardState.NOT_PRESSED)
+  )
   const [currentInputIdx, setCurrentInputIdx] = useState(0)
   const [currentRound, setCurrentRound] = useState(0)
   const [isPlaying, setIsPlaying] = useState(true)
   const [usedButtons, setUsedButtons] = useState<KeyboardButton>(
     getInitialKeyboardState()
   )
+  const [gameCleared, setGameCleared] = useAtom(showCompletionModal)
 
   const handleEnter = () => {
     checkAnswer()
@@ -104,9 +111,14 @@ function App() {
     (index: number) => {
       if (!container) return
 
-      const inputEl = container.children[index + LENGTH * currentRound]
+      const _index = index + LENGTH * currentRound
+      const inputEl = container.children[_index]
 
       inputEl.classList.add(styles.correct)
+      setInputState((prev) => {
+        prev[_index] = KeyboardState.CORRECT
+        return [...prev]
+      })
     },
     [container, currentRound]
   )
@@ -115,9 +127,14 @@ function App() {
     (index: number) => {
       if (!container) return
 
-      const inputEl = container.children[index + LENGTH * currentRound]
+      const _index = index + LENGTH * currentRound
+      const inputEl = container.children[_index]
 
       inputEl.classList.add(styles.wrong_position)
+      setInputState((prev) => {
+        prev[_index] = KeyboardState.WRONG_POSITION
+        return [...prev]
+      })
     },
     [container, currentRound]
   )
@@ -126,15 +143,21 @@ function App() {
     (index: number) => {
       if (!container) return
 
-      const inputEl = container.children[index + LENGTH * currentRound]
+      const _index = index + LENGTH * currentRound
+      const inputEl = container.children[_index]
 
       inputEl.classList.add(styles.incorrect)
+      setInputState((prev) => {
+        prev[_index] = KeyboardState.INCORRECT
+        return [...prev]
+      })
     },
     [container, currentRound]
   )
 
   const gameClear = () => {
     setIsPlaying(false)
+    setGameCleared(true)
   }
 
   const gameOver = () => {
@@ -235,6 +258,7 @@ function App() {
         ))}
       </div>
       <Keyboard usedButtons={usedButtons} onClick={onKeyButtonPressed} />
+      <CompletionModal inputState={inputState} />
     </div>
   )
 }

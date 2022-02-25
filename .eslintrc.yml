@@ -46,6 +46,9 @@ rules:
         - pattern: 'react'
           group: 'external'
           position: 'before'
+      alphabetize:
+        order: 'asc'
+        caseInsensitive: true
       newlines-between: 'always'
   lines-between-class-members:
     - error

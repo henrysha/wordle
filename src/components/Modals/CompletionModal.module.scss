@@ -1,0 +1,57 @@
+@import '../../App.module.scss';
+
+.wrapper {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  position: relative;
+
+  .blocksWrapper {
+    display: grid;
+    place-items: center;
+
+    .blocks {
+      display: grid;
+      grid-template-columns: repeat($length, 1fr);
+      grid-template-rows: repeat($rounds, 1fr);
+      place-items: center;
+      grid-gap: 1em;
+      width: 80%;
+
+      div {
+        place-self: stretch;
+        aspect-ratio: 1;
+      }
+
+      .correct {
+        background: linear-gradient(45deg, rgb(0, 95, 0), green);
+      }
+
+      .incorrect {
+        background: linear-gradient(
+          45deg,
+          rgb(122, 122, 122),
+          rgb(224, 224, 224)
+        );
+      }
+
+      .wrongPosition {
+        background: linear-gradient(45deg, rgb(197, 197, 0), yellow);
+      }
+
+      .notPressed {
+        background: black;
+      }
+    }
+  }
+
+  .closeButton {
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: 1.5em;
+    width: 2em;
+    height: 2em;
+    background: transparent;
+    border: none;
+  }
+}

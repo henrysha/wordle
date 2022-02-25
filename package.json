@@ -15,6 +15,7 @@
     "deploy": "yarn build && gh-pages -d dist"
   },
   "dependencies": {
+    "jotai": "^1.6.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2"
   },
