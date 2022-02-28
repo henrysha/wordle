@@ -6,3 +6,5 @@
 'Cause Wordle is so famous.
 
 ## [ENJOY THE GAME](https://henrysha.github.io/wordle)
+
+This is not a fork of the famous [React Wordle](https://github.com/cwackerfuss/react-wordle). I developed this package from the beginning, without knowing the existence of the oss. Oh well. Too bad.
