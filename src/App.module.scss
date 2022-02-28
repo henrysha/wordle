@@ -10,6 +10,7 @@ $incorrectColor: lightgrey;
   width: 100%;
   max-width: 1280px;
   height: 100vh;
+  max-height: -webkit-fill-available;
   display: grid;
   grid-template-rows: 7fr 3fr;
 }
