@@ -7,6 +7,7 @@ $incorrectColor: lightgrey;
 
 .App {
   position: relative;
+  width: 100%;
   max-width: 1280px;
   height: 100vh;
   display: grid;
@@ -27,7 +28,6 @@ $incorrectColor: lightgrey;
 .input {
   justify-self: stretch;
   align-self: stretch;
-  width: 100%;
   font-size: 5vw;
   aspect-ratio: 1;
   place-items: center;
