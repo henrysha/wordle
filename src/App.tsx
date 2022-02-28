@@ -85,12 +85,14 @@ function App() {
     }
   }
 
+  const getNewInputIdx = (index: number) => {
+    if (inputs[index] || index % LENGTH === 0) return index
+    return index - 1
+  }
+
   const removePrevInput = useCallback(() => {
     setCurrentInputIdx((prevInputIdx) => {
-      const newInputIdx =
-        currentInputs[prevInputIdx] && prevInputIdx % LENGTH > 0
-          ? prevInputIdx
-          : prevInputIdx - 1
+      const newInputIdx = getNewInputIdx(prevInputIdx)
 
       setCurrentInputs((prev) => {
         const index = newInputIdx - currentRound * LENGTH
